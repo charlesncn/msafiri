@@ -1,46 +1,36 @@
-# Project Name: Msafiri
+# Msafiri Project
 
-## Overview
-Msafiri is a microservice-based project developed using Spring Boot, Docker, Grafana, and other related technologies. It aims to provide a scalable and efficient solution for managing various aspects of a travel application.
-
-The project follows a microservice architecture, which allows breaking down the application into smaller, independent services that can be developed, deployed, and scaled independently. Each microservice focuses on a specific functionality or domain, enabling better maintainability, scalability, and fault isolation.
+Msafiri is a microservice-based project implemented using Spring Boot. It follows a microservice architecture and incorporates various technologies for inter-process communication, service discovery, API gateway, secure microservices, circuit breaker, distributed tracing, event-driven architecture, Dockerization, and monitoring.
 
 ## Technologies Used
-- **Spring Boot**: Spring Boot is used as the core framework for building the microservices. It provides a streamlined development experience, auto-configuration, and easy integration with other Spring projects.
 
-- **Docker**: Docker is used for containerization, allowing the microservices to be packaged along with their dependencies into lightweight and isolated containers. This simplifies deployment and ensures consistency across different environments.
-
-- **Grafana**: Grafana is utilized for monitoring and visualization of system metrics, performance, and logs. It helps in gaining insights into the behavior of the microservices, identifying bottlenecks, and troubleshooting issues.
-
-## Key Features
-- **Microservice Architecture**: The project follows a microservice architecture, which promotes modularity, scalability, and fault tolerance. Each microservice can be developed, tested, deployed, and scaled independently, enabling agility and flexibility.
-
-- **Travel Application**: Msafiri focuses on managing various aspects of a travel application. This may include functionalities such as user registration and authentication, flight booking, hotel reservations, trip planning, and more.
-
-- **RESTful APIs**: The microservices expose RESTful APIs to communicate with each other and external clients. These APIs provide a standardized interface for interacting with the different services and accessing their functionalities.
-
-- **Containerization**: Docker is used to containerize the microservices, ensuring that they can run consistently across different environments. This simplifies deployment, improves scalability, and enhances portability.
-
-- **Monitoring and Visualization**: Grafana is integrated into the project to monitor the performance and health of the microservices. It provides real-time insights into system metrics, logs, and other relevant data, enabling efficient troubleshooting and optimization.
+- **Spring Boot:** Msafiri is built using Spring Boot, a Java-based framework that simplifies the development of microservices.
+- **Inter Process Communication:** The project utilizes a mechanism for communication between microservices, allowing them to exchange data and invoke functionality. This enables seamless integration and collaboration between different services.
+- **Service Discovery (Netflix Eureka):** Netflix Eureka is employed for service discovery, enabling microservices to locate and communicate with each other dynamically. This helps in achieving a flexible and scalable architecture.
+- **API Gateway (Spring Cloud Gateway):** Spring Cloud Gateway acts as the entry point for external requests and routes them to the appropriate microservice. It provides features like routing, filtering, and load balancing, enhancing the security and performance of the system.
+- **Secure Microservices (Keycloak):** Keycloak is integrated into the project to provide authentication and authorization capabilities for microservices. It ensures secure access control and user management within the system.
+- **Circuit Breaker:** A circuit breaker pattern is implemented to prevent cascading failures in the system. It allows the system to handle faults and failures gracefully, providing resilience and fault tolerance.
+- **Distributed Tracing:** Distributed tracing is used to monitor and analyze the flow of requests across microservices. It enables the identification and resolution of performance issues and bottlenecks, ensuring optimal system performance.
+- **Event Driven Architecture (Kafka):** Kafka is utilized to implement an event-driven architecture, enabling communication between microservices through a publish-subscribe messaging system. It facilitates loose coupling and asynchronous communication.
+- **Dockerization:** The entire application is containerized using Docker, enabling easy deployment and scaling of microservices. Docker provides a consistent and isolated environment for running the application.
+- **Monitoring Microservices (Prometheus and Grafana):** Prometheus is used for collecting metrics and monitoring the health of microservices. Grafana is employed for visualizing and analyzing the collected metrics, providing insights into the system's performance and behavior.
 
 ## Getting Started
-To get started with the Msafiri project, follow the instructions below:
 
-1. Clone the project repository from [GitHub](https://github.com/charlesncn/msafiri/).
-2. Install Docker and Docker Compose on your machine.
-3. Build and run each microservice using the provided Docker Compose configuration.
-4. Access the RESTful APIs of the microservices and integrate them into your travel application.
-5. Monitor the performance and metrics using Grafana.
+To set up the Msafiri project locally, follow these steps:
 
-For more detailed instructions and documentation, please refer to the project's README and documentation files.
+1. Clone the repository from GitHub.
+2. Install Docker on your machine.
+3. Build the Docker images for each microservice.
+4. Run the Docker containers for each microservice.
+5. Access the API gateway to interact with the microservices.
+
+Detailed instructions for setting up and running the project can be found in the project's documentation.
 
 ## Contributing
-If you're interested in contributing to the Msafiri project, please follow the guidelines outlined in the CONTRIBUTING.md file of the project repository. Contributions, bug reports, feature requests, and feedback are always welcome!
+
+Contributions to Msafiri are welcome! If you want to contribute, please follow the guidelines outlined in the project's contribution guide.
 
 ## License
-The Msafiri project is open-source and released under the [MIT License](https://opensource.org/licenses/MIT). You are free to modify, distribute, and use the project for both personal and commercial purposes. However, please refer to the LICENSE file for the complete details and terms of the license.
 
-## Contact
-For any further questions, suggestions, or discussions related to the Msafiri project, please reach out to the project maintainers or create an issue on the GitHub repository.
-
-Thank you for your interest in Msafiri!
+The Msafiri project is licensed under the [MIT License](https://opensource.org/licenses/MIT). Feel free to use, modify, and distribute the project as per the terms of the license.
