@@ -1,22 +1,26 @@
-package com.msafiri.product.entity;
+package com.msafiri.product.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
-@Data
+import java.math.BigDecimal;
+
+@Document(value = "product")
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "products", schema = "pd")
+@Builder
+@Data
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int productId;
+    private Integer productId;
     private String name;
     private String description;
-    private String price;
+    private BigDecimal price;
     private String category;
     private String image;
     private String quantity;
