@@ -1,11 +1,11 @@
 package com.msafiri.product.Controller;
 
-import com.mongodb.lang.Nullable;
 import com.msafiri.product.dto.request.ProductRequest;
 import com.msafiri.product.dto.response.ApiResponse;
 import com.msafiri.product.exception.ProductNotFoundException;
 import com.msafiri.product.service.ProductService;
 import jakarta.validation.Valid;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +25,8 @@ public class Controller {
         return productService.createProduct(productRequest);
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<ApiResponse> getProduct(@Nullable @PathVariable String id) throws ProductNotFoundException {
+    @GetMapping()
+    public ResponseEntity<?> getProduct(@Param(value = "id") String id) throws ProductNotFoundException {
         return productService.getProduct(id);
     }
 }

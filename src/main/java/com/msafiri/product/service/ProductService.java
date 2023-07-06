@@ -41,21 +41,21 @@ public class ProductService {
         return new ResponseEntity<>(ApiResponse.successResponse(null), HttpStatus.CREATED);
     }
 
-    public ResponseEntity<ApiResponse> getProduct(String i) throws ProductNotFoundException {
+    public ResponseEntity<?> getProduct(String i) throws ProductNotFoundException {
         if (i == null || i.isEmpty()) {
             List<Product> productsList = productRepository.findAll();
             HttpStatus httpStatus = productsList.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK;
 
             List<ProductResponse> productList = productsList.stream().map(this::mapToResponse).toList();
 
-            return new ResponseEntity<>(ApiResponse.successResponse(productList), httpStatus);
+            return new ResponseEntity<>(productList, httpStatus);
         }
-        Product product = productRepository.findByProductId(Integer.parseInt(i));
+        Product product = productRepository.findByProductId(i);
         if (product == null) throw new ProductNotFoundException("Product not found");
 
         ProductResponse productResponse = mapToResponse(product);
 
-        return new ResponseEntity<>(ApiResponse.successResponse(productResponse), HttpStatus.OK);
+        return new ResponseEntity<>(productResponse, HttpStatus.OK);
     }
 
     private ProductResponse mapToResponse(Product product) {

@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Data
 public class ProductResponse {
-    private Integer productId;
+    private String productId;
     private String name;
     private String description;
     private double price;
