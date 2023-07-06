@@ -1,6 +1,8 @@
 package com.msafiri.product.dto.request;
 
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,14 +14,14 @@ import org.hibernate.validator.constraints.Range;
 @Builder
 @Data
 public class ProductRequest {
-    @NotBlank(message = "Name is required")
+    @NotEmpty(message = "Name is required")
     private String name;
-    @NotBlank(message = "Description is required")
+    @NotEmpty(message = "Description is required")
     private String description;
-    @NotBlank(message = "Price is required")
-    @Range(min = 1, message = "Price must be greater than 0")
-    private double price;
-    @NotBlank(message = "Category is required")
+    @NotNull(message = "Price is required")
+    @Positive(message = "Price must be greater than 0")
+    private Double price;
+    @NotEmpty(message = "Category is required")
     private String category;
     private String image;
     private int quantity;

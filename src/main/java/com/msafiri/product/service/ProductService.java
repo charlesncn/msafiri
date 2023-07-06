@@ -2,6 +2,7 @@ package com.msafiri.product.service;
 
 import com.msafiri.product.dto.request.ProductRequest;
 import com.msafiri.product.dto.response.ApiResponse;
+import com.msafiri.product.dto.response.ProductResponse;
 import com.msafiri.product.exception.ProductNotFoundException;
 import com.msafiri.product.model.Product;
 import com.msafiri.product.repository.ProductRepository;
@@ -42,14 +43,30 @@ public class ProductService {
 
     public ResponseEntity<ApiResponse> getProduct(String i) throws ProductNotFoundException {
         if (i == null || i.isEmpty()) {
-            List<Product> products = productRepository.findAll();
-            HttpStatus httpStatus = products.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK;
+            List<Product> productsList = productRepository.findAll();
+            HttpStatus httpStatus = productsList.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK;
 
-            return new ResponseEntity<>(ApiResponse.successResponse(products), httpStatus);
+            List<ProductResponse> productList = productsList.stream().map(this::mapToResponse).toList();
+
+            return new ResponseEntity<>(ApiResponse.successResponse(productList), httpStatus);
         }
         Product product = productRepository.findByProductId(Integer.parseInt(i));
         if (product == null) throw new ProductNotFoundException("Product not found");
 
-        return new ResponseEntity<>(ApiResponse.successResponse(new Object()), HttpStatus.OK);
+        ProductResponse productResponse = mapToResponse(product);
+
+        return new ResponseEntity<>(ApiResponse.successResponse(productResponse), HttpStatus.OK);
+    }
+
+    private ProductResponse mapToResponse(Product product) {
+        return ProductResponse.builder()
+                .productId(product.getProductId())
+                .name(product.getName())
+                .description(product.getDescription())
+                .price(product.getPrice().doubleValue())
+                .category(product.getCategory())
+                .image(product.getImage())
+                .quantity(Integer.parseInt(product.getQuantity()))
+                .build();
     }
 }

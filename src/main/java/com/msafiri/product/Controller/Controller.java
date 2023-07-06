@@ -19,7 +19,7 @@ public class Controller {
         this.productService = productService;
     }
 
-    @RequestMapping()
+    @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<ApiResponse> createProduct(@RequestBody @Valid ProductRequest productRequest) {
         return productService.createProduct(productRequest);

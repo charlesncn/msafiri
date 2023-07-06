@@ -11,4 +11,8 @@ services:
     image: 'mongo:latest'
     environment:
       - 'MONGO_INITDB_ROOT_USERNAME: root'
-      - 'MONGO_INITDB_ROOT_PASSWORD: example'
+      - 'MONGO_INITDB_ROOT_PASSWORD: root'
+    ports:
+      - '27017:27017'
+    container_name: 'mongodb'
+    hostname: 'localhost'
