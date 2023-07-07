@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.msafiri.product.dto.request.ProductRequest;
 import com.msafiri.product.model.Product;
 import com.msafiri.product.repository.ProductRepository;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
