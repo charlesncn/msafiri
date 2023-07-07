@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -68,5 +69,12 @@ public class ProductService {
                 .image(product.getImage())
                 .quantity(Integer.parseInt(product.getQuantity()))
                 .build();
+    }
+
+    public ResponseEntity<?> deleteProduct(String id) throws ProductNotFoundException {
+        Optional<Product> product = Optional.ofNullable(productRepository.findByProductId(id));
+        if (product.isEmpty()) throw new ProductNotFoundException("Product with id: " + id + " not found");
+        productRepository.delete(product.get());
+        return ResponseEntity.ok().build();
     }
 }

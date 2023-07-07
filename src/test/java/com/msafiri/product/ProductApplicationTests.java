@@ -3,8 +3,7 @@ package com.msafiri.product;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.msafiri.product.dto.request.ProductRequest;
 import com.msafiri.product.repository.ProductRepository;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -44,6 +43,7 @@ class ProductApplicationTests {
         registry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
     }
 
+
     @Test
     void shouldSaveProduct() throws Exception {
         ProductRequest productRequest = getProductRequest();
@@ -57,6 +57,13 @@ class ProductApplicationTests {
         Assertions.assertTrue(productRepository.findAll().size() > 0);
     }
 
+    @Test
+    void shouldGetProduct() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/product")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(productRepository.findAll().size() > 0 ? status().isOk() : status().isNoContent());
+    }
+
     private ProductRequest getProductRequest() {
         return ProductRequest.builder()
                 .name("Test Product")
@@ -68,4 +75,8 @@ class ProductApplicationTests {
                 .build();
     }
 
+    @AfterAll
+    static void tearDown() {
+        mongoDBContainer.close();
+    }
 }
