@@ -23,4 +23,10 @@ public class OrderController {
         return orderService.createOrder(orderRequest);
     }
 
+//    get all orders || get order by id || get order by customer id || get order by product id
+
+
+//    update order
+//    delete order
+
 }
