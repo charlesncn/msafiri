@@ -1,0 +1,16 @@
+spring:
+  profiles:
+    active: dev
+    #    active: staging
+
+  datasource:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+server:
+  port: 8082
+  error:
+    include-message: always
