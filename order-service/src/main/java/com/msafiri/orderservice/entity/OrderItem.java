@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "order_item_table")
+@Table(name = "`order_item_table`")
 public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
