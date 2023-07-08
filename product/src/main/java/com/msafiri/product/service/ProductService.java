@@ -6,7 +6,7 @@ import com.msafiri.product.dto.response.ProductResponse;
 import com.msafiri.product.exception.ProductNotFoundException;
 import com.msafiri.product.model.Product;
 import com.msafiri.product.repository.ProductRepository;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
