@@ -8,18 +8,18 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Entity
-@Table(name = "orders")
+@Table(name = "order_table")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Order {
 
-    @jakarta.persistence.Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long orderId;
     private String orderNumber;
     private String description;
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL)
     private List<OrderItem> orderItems;
 
 }
