@@ -1,6 +1,7 @@
 package com.msafiri.product.exception;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.core.MethodParameter;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -28,7 +29,7 @@ class CustomExceptionHandlerTest {
         bindingResult.addError(fieldError1);
         bindingResult.addError(fieldError2);
 
-        MethodArgumentNotValidException ex = new MethodArgumentNotValidException(null, bindingResult);
+        MethodArgumentNotValidException ex = new MethodArgumentNotValidException((MethodParameter) null, bindingResult);
 
         Optional<Map<String, String>> resultOptional = customExceptionHandler.handleInvalidArgument(ex);
 
