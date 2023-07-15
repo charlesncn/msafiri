@@ -7,8 +7,6 @@ import com.msafiri.orderservice.repository.OrderRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -56,6 +54,8 @@ class OrderServiceApplicationTests {
         registry.add("spring.jpa.properties.hibernate.format_sql", () -> "true");
         registry.add("spring.jpa.properties.hibernate.show_sql", () -> "true");
         registry.add("spring.jpa.properties.hibernate.use_sql_comments", () -> "true");
+        registry.add("spring.datasource.initialization-mode", () -> "always");
+        registry.add("spring.datasource.sql.init.schema-locations", () -> "classpath:init-script.sql");
     }
 
     @Test
@@ -73,7 +73,7 @@ class OrderServiceApplicationTests {
     private OrderRequest getOrderRequest() {
         OrderItemDto orderItemDto = new OrderItemDto(
                 1,
-                12,
+                "12",
                 3,
                 BigDecimal.valueOf(200.00));
         List<OrderItemDto> orderRequestList = new ArrayList<>();

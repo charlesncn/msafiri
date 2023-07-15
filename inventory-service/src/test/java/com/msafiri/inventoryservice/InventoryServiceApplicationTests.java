@@ -73,7 +73,7 @@ class InventoryServiceApplicationTests {
     }
 
     private NewProductRequest getInventoryRequest() {
-        return new NewProductRequest(35474, 3400);
+        return new NewProductRequest("35474", 3400);
     }
 
     private Inventory getInventory() {

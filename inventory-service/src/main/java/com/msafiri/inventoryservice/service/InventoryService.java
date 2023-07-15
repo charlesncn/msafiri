@@ -1,6 +1,7 @@
 package com.msafiri.inventoryservice.service;
 
 import com.msafiri.inventoryservice.dto.reponse.ApiResponse;
+import com.msafiri.inventoryservice.dto.reponse.InventoryResponse;
 import com.msafiri.inventoryservice.dto.request.NewProductRequest;
 import com.msafiri.inventoryservice.entity.Inventory;
 import com.msafiri.inventoryservice.repository.InventoryRepository;
@@ -9,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import java.util.List;
 
 @Service
 public class InventoryService {
@@ -20,14 +21,26 @@ public class InventoryService {
     }
 
     @Transactional(readOnly = true)
-    public ResponseEntity<?> getInventoryStatus(Long id) {
-        Optional<?> inventory = inventoryRepository.findByProductId(id);
-        return inventory.map(ResponseEntity::ok).orElse(ResponseEntity.noContent().build());
+    public ResponseEntity<?> getInventoryStatus(List<String> id) {
+        if (id.isEmpty())
+            throw new IllegalArgumentException("Product id cannot be empty");
+
+        List<Inventory> inventory = inventoryRepository.findByProductIdIn(id);
+
+        System.out.println("Items in Inventory: " + inventory);
+
+        return new ResponseEntity<>(inventory.stream().map(inventoryRes ->
+                InventoryResponse.builder()
+                        .productId(inventoryRes.getProductId())
+                        .available(inventoryRes.getQuantity() > 0)
+                        .quantity(inventoryRes.getQuantity())
+                        .build()).toList(),
+                HttpStatus.OK);
     }
 
     public ResponseEntity<?> saveInventory(NewProductRequest request) {
         Inventory inventory = new Inventory();
-        inventory.setProductId(request.getProductId());
+        inventory.setProductId(String.valueOf(request.getProductId()));
         inventory.setQuantity(request.getQuantity());
         try {
             inventoryRepository.save(inventory);

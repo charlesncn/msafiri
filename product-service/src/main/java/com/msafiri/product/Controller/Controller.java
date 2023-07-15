@@ -26,12 +26,12 @@ public class Controller {
     }
 
     @GetMapping()
-    public ResponseEntity<?> getProduct(@Param(value = "id") String id) throws ProductNotFoundException {
+    public ResponseEntity<?> getProduct(@RequestParam(value = "id") String id) throws ProductNotFoundException {
         return productService.getProduct(id);
     }
 
     @DeleteMapping()
-    public ResponseEntity<?> deleteProduct(@Param(value = "id") String id) throws ProductNotFoundException {
+    public ResponseEntity<?> deleteProduct(@RequestParam(value = "id") String id) throws ProductNotFoundException {
         if (id == null || id.isEmpty()) throw new ProductNotFoundException("Invalid product id");
         return productService.deleteProduct(id);
     }

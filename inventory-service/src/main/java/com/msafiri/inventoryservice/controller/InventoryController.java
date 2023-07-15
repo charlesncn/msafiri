@@ -1,10 +1,13 @@
 package com.msafiri.inventoryservice.controller;
 
+import com.msafiri.inventoryservice.dto.reponse.InventoryResponse;
 import com.msafiri.inventoryservice.dto.request.NewProductRequest;
 import com.msafiri.inventoryservice.service.InventoryService;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/inventory")
@@ -16,8 +19,8 @@ public class InventoryController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getInventoryStatus(@Param("id") String id) {
-        return inventoryService.getInventoryStatus(Long.valueOf(id));
+    public ResponseEntity<?> getInventoryStatus(@RequestParam("id") List<String> id) {
+        return inventoryService.getInventoryStatus(id);
     }
 
 //    save inventory

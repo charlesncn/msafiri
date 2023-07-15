@@ -1,7 +1,9 @@
 package com.msafiri.orderservice.controller;
 
 import com.msafiri.orderservice.dto.request.OrderRequest;
+import com.msafiri.orderservice.exception.ItemNotFoundException;
 import com.msafiri.orderservice.service.PlaceOrderService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,7 +21,7 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<?> placeOrder(@RequestBody OrderRequest orderRequest) {
+    public ResponseEntity<?> placeOrder(@RequestBody @Valid OrderRequest orderRequest) throws ItemNotFoundException {
         return orderService.createOrder(orderRequest);
     }
 

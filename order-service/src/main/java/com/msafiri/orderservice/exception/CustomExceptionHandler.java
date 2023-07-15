@@ -24,9 +24,9 @@ public class CustomExceptionHandler {
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(OrderNotFoundException.class)
-    public Optional<Map<String, String>> handleProductNotFound(OrderNotFoundException ex) {
-        Optional<OrderNotFoundException> optional = Optional.ofNullable(ex);
+    @ExceptionHandler(ItemNotFoundException.class)
+    public Optional<Map<String, String>> handleProductNotFound(ItemNotFoundException ex) {
+        Optional<ItemNotFoundException> optional = Optional.ofNullable(ex);
         Map<String, String> errors = new HashMap<>();
         optional.ifPresent(e -> errors.put("message", e.getMessage()));
         return Optional.of(errors);

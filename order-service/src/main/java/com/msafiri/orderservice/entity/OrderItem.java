@@ -19,7 +19,7 @@ public class OrderItem {
     private long orderItemId;
     private String status;
     private long customerId;
-    private long productId;
+    private String productId;
     private int quantity;
     private BigDecimal price;
 }
