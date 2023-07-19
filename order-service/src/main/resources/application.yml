@@ -4,16 +4,23 @@ spring:
     #    active: staging
 
   datasource:
-      driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     hibernate:
       ddl-auto: update
+  application:
+    name: order-service
 
 server:
   port: 8081
   error:
     include-message: always
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
 
 logging:
   level:
