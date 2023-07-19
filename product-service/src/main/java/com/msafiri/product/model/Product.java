@@ -1,7 +1,5 @@
 package com.msafiri.product.model;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

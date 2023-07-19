@@ -22,6 +22,7 @@ public class ApiResponse {
     public static ApiResponse successResponse(String msg, Object data) {
         return new ApiResponse(msg, data);
     }
+
     public static ApiResponse successResponse(String msg) {
         return new ApiResponse(msg);
     }

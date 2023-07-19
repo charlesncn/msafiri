@@ -1,9 +1,7 @@
 package com.msafiri.inventoryservice.controller;
 
-import com.msafiri.inventoryservice.dto.reponse.InventoryResponse;
 import com.msafiri.inventoryservice.dto.request.NewProductRequest;
 import com.msafiri.inventoryservice.service.InventoryService;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +21,7 @@ public class InventoryController {
         return inventoryService.getInventoryStatus(id);
     }
 
-//    save inventory
+    //    save inventory
     @PostMapping
     public ResponseEntity<?> saveInventory(@RequestBody NewProductRequest inventory) {
         return inventoryService.saveInventory(inventory);

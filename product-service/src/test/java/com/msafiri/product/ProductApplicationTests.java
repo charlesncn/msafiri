@@ -34,15 +34,12 @@ class ProductApplicationTests {
     @Container
     static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:4.4.3");
 //
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
     @Autowired
     ProductRepository productRepository;
+    @Autowired
+    private MockMvc mockMvc;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @DynamicPropertySource
     static void setProps(DynamicPropertyRegistry registry) {
