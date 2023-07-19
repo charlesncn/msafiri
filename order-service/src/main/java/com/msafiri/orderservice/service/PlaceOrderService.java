@@ -20,11 +20,11 @@ import java.util.stream.Collectors;
 public class PlaceOrderService {
 
     private final OrderRepository orderRepository;
-    private final WebClient webClient;
+    private final WebClient.Builder webClientBuilder;
 
-    public PlaceOrderService(OrderRepository orderRepository, WebClient webClient) {
+    public PlaceOrderService(OrderRepository orderRepository, WebClient.Builder webClientBuilder) {
         this.orderRepository = orderRepository;
-        this.webClient = webClient;
+        this.webClientBuilder = webClientBuilder;
     }
 
     public ResponseEntity<?> createOrder(OrderRequest orderRequest) throws ItemNotFoundException {
@@ -38,8 +38,8 @@ public class PlaceOrderService {
             List<String> productIdList = order.getOrderItems().stream().map(OrderItem::getProductId).map(String::valueOf).toList();
             System.out.println(productIdList);
 
-            InventoryResponse[] results = webClient.get()
-                    .uri("http://localhost:8082/api/v1/inventory",
+            InventoryResponse[] results = webClientBuilder.build().get()
+                    .uri("http://inventory-service/api/v1/inventory",
                             uriBuilder -> uriBuilder.queryParam("id", productIdList).build())
                     .retrieve().bodyToMono(InventoryResponse[].class)
                     .block();

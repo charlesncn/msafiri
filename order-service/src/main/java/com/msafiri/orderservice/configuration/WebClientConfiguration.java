@@ -1,6 +1,7 @@
 package com.msafiri.orderservice.configuration;
 
 import org.springframework.boot.web.reactive.function.client.WebClientCustomizer;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
@@ -11,8 +12,9 @@ import reactor.core.publisher.Mono;
 public class WebClientConfiguration {
 
     @Bean
-    public WebClient webClient() {
-        return WebClient.create();
+    @LoadBalanced
+    public WebClient.Builder webClientBuilder() {
+        return WebClient.builder();
     }
 
     @Bean
