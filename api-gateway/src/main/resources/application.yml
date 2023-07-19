@@ -1,0 +1,14 @@
+eureka:
+  client:
+    serviceUrl:
+        defaultZone: http://localhost:8761/eureka/
+
+spring:
+  application:
+    name: api-gateway
+
+logging:
+  level:
+    root: info
+    org.springframework.cloud.gateway: trace
+    org.springframework.cloud.gateway.route.RouteDefinitionRouteLocator: debug
