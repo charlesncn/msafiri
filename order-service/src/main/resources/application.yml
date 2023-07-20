@@ -55,7 +55,14 @@ resilience4j:
         automatic-transition-from-open-to-half-open-enabled: true
 
 #  resiliency4j timeouts
-  timelimiter:
+  time-limiter:
     instances:
       inventory:
         timeout-duration: 3s
+
+#  resiliency4j retry
+  retry:
+    instances:
+      inventory:
+        max-attempts: 3
+        wait-duration: 5s
