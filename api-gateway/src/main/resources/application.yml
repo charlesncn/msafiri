@@ -30,6 +30,12 @@ spring:
         uri: http://localhost:8761
         predicates[0]: Path=/eureka/**
 
+  security:
+    oauth2:
+      resource-server:
+        jwt:
+          issuer-uri: http://0.0.0.0:8181/realms/msafiri-realm
+
 logging:
   level:
     root: info

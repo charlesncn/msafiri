@@ -1,4 +1,4 @@
-package com.msafiri.product.Controller;
+package com.msafiri.product.controller;
 
 import com.msafiri.product.dto.request.ProductRequest;
 import com.msafiri.product.dto.response.ApiResponse;
