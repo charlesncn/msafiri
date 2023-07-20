@@ -2,6 +2,7 @@ package com.msafiri.orderservice.dto.reesponse;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.validation.constraints.AssertFalse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,4 +31,5 @@ public class ApiResponse {
     public static ApiResponse errorResponse(String message) {
         return new ApiResponse(message, null);
     }
+
 }

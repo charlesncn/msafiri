@@ -5,6 +5,7 @@ import com.msafiri.inventoryservice.dto.reponse.InventoryResponse;
 import com.msafiri.inventoryservice.dto.request.NewProductRequest;
 import com.msafiri.inventoryservice.entity.Inventory;
 import com.msafiri.inventoryservice.repository.InventoryRepository;
+import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -21,12 +22,14 @@ public class InventoryService {
     }
 
     @Transactional(readOnly = true)
+    @SneakyThrows
     public ResponseEntity<?> getInventoryStatus(List<String> id) {
         if (id.isEmpty())
             throw new IllegalArgumentException("Product id cannot be empty");
 
         List<Inventory> inventory = inventoryRepository.findByProductIdIn(id);
 
+        Thread.sleep(10000);
         System.out.println("Items in Inventory: " + inventory);
 
         return new ResponseEntity<>(inventory.stream().map(inventoryRes ->

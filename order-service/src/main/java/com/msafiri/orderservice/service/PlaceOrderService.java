@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class PlaceOrderService {
@@ -68,7 +69,7 @@ public class PlaceOrderService {
 
         } else {
             orderRepository.save(order);
-            return new ResponseEntity<>(ApiResponse.successResponse("Order created successfully"), HttpStatus.CREATED);
+            return new ResponseEntity<>(new ApiResponse("Order created successfully"), HttpStatus.CREATED);
         }
     }
 
