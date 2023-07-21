@@ -36,10 +36,16 @@ spring:
         jwt:
           issuer-uri: http://0.0.0.0:8181/realms/msafiri-realm
 
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+
 logging:
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+
   level:
     root: info
     org.springframework.cloud.gateway: trace
     org.springframework.cloud.gateway.route.RouteDefinitionRouteLocator: debug
-
-#product service route

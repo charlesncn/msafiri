@@ -22,14 +22,11 @@ eureka:
     serviceUrl:
       defaultZone: http://eureka:password@localhost:8761/eureka
 
-logging:
-  level:
-    org.springframework.web.reactive.function.client.ExchangeFunctions: DEBUG
 
 management:
   endpoint:
     health:
-        show-details: always
+      show-details: always
   health:
     circuit-breakers:
       enabled: true
@@ -39,6 +36,17 @@ management:
       exposure:
         include: '*'
 
+  tracing:
+    sampling:
+      probability: 1.0
+
+logging:
+  level:
+    level:
+      org.springframework.web:
+        DEBUG
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
 
 #  resiliency4j properties
 resilience4j:
@@ -54,13 +62,13 @@ resilience4j:
         permitted-number-of-calls-in-half-open-state: 3
         automatic-transition-from-open-to-half-open-enabled: true
 
-#  resiliency4j timeouts
+  #  resiliency4j timeouts
   time-limiter:
     instances:
       inventory:
         timeout-duration: 3s
 
-#  resiliency4j retry
+  #  resiliency4j retry
   retry:
     instances:
       inventory:

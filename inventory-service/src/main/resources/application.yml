@@ -2,16 +2,33 @@ spring:
   profiles:
     active: dev
     #    active: staging
-
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-
   jpa:
     hibernate:
       ddl-auto: update
   application:
     name: inventory-service
+
+#  sleuth:
+#    sampler:
+#      probability: 1.0 # trace all requests
+#    trace-id128: true
+#    supports-join: true
+#  cloud:
+#    compatibility-verifier:
+#      enabled: false
+
 server:
   port: 0
   error:
     include-message: always
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+
+logging:
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"

@@ -22,14 +22,11 @@ public class InventoryService {
     }
 
     @Transactional(readOnly = true)
-    @SneakyThrows
     public ResponseEntity<?> getInventoryStatus(List<String> id) {
         if (id.isEmpty())
             throw new IllegalArgumentException("Product id cannot be empty");
 
         List<Inventory> inventory = inventoryRepository.findByProductIdIn(id);
-
-        Thread.sleep(10000);
         System.out.println("Items in Inventory: " + inventory);
 
         return new ResponseEntity<>(inventory.stream().map(inventoryRes ->
