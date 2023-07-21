@@ -12,6 +12,10 @@ spring:
   application:
     name: order-service
 
+  output:
+    ansi:
+      enabled:
+        always
 server:
   port: 8081
   error:
@@ -39,11 +43,16 @@ management:
   tracing:
     sampling:
       probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans
 
 logging:
   level:
     level:
       org.springframework.web:
+        DEBUG
+      org.springframework.web.servlet.DispatcherServlet:
         DEBUG
   pattern:
     level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
