@@ -6,25 +6,28 @@ import com.msafiri.orderservice.dto.request.OrderItemDto;
 import com.msafiri.orderservice.dto.request.OrderRequest;
 import com.msafiri.orderservice.entity.Order;
 import com.msafiri.orderservice.entity.OrderItem;
+import com.msafiri.orderservice.event.OrderListEvent;
 import com.msafiri.orderservice.exception.ItemNotFoundException;
 import com.msafiri.orderservice.repository.OrderRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
 
 @Service
 public class PlaceOrderService {
 
     private final OrderRepository orderRepository;
     private final WebClient.Builder webClientBuilder;
+    private final KafkaTemplate<String, OrderListEvent> kafkaTemplate;
 
-    public PlaceOrderService(OrderRepository orderRepository, WebClient.Builder webClientBuilder) {
+    public PlaceOrderService(OrderRepository orderRepository, WebClient.Builder webClientBuilder, KafkaTemplate<String, OrderListEvent> kafkaTemplate) {
         this.orderRepository = orderRepository;
         this.webClientBuilder = webClientBuilder;
+        this.kafkaTemplate = kafkaTemplate;
     }
 
     public ResponseEntity<?> createOrder(OrderRequest orderRequest) throws ItemNotFoundException {
@@ -69,6 +72,7 @@ public class PlaceOrderService {
 
         } else {
             orderRepository.save(order);
+            kafkaTemplate.send("order", new OrderListEvent(order.getOrderNumber()));
             return new ResponseEntity<>(new ApiResponse("Order created successfully"), HttpStatus.CREATED);
         }
     }
