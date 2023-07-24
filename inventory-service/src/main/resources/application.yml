@@ -10,15 +10,6 @@ spring:
   application:
     name: inventory-service
 
-#  sleuth:
-#    sampler:
-#      probability: 1.0 # trace all requests
-#    trace-id128: true
-#    supports-join: true
-#  cloud:
-#    compatibility-verifier:
-#      enabled: false
-
 server:
   port: 0
   error:

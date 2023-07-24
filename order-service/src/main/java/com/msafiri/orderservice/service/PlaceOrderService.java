@@ -22,9 +22,9 @@ public class PlaceOrderService {
 
     private final OrderRepository orderRepository;
     private final WebClient.Builder webClientBuilder;
-    private final KafkaTemplate<String, OrderListEvent> kafkaTemplate;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
 
-    public PlaceOrderService(OrderRepository orderRepository, WebClient.Builder webClientBuilder, KafkaTemplate<String, OrderListEvent> kafkaTemplate) {
+    public PlaceOrderService(OrderRepository orderRepository, WebClient.Builder webClientBuilder, KafkaTemplate<String, Object> kafkaTemplate) {
         this.orderRepository = orderRepository;
         this.webClientBuilder = webClientBuilder;
         this.kafkaTemplate = kafkaTemplate;
@@ -72,7 +72,13 @@ public class PlaceOrderService {
 
         } else {
             orderRepository.save(order);
-            kafkaTemplate.send("order", new OrderListEvent(order.getOrderNumber()));
+            try{
+                OrderListEvent orderListEvent = new OrderListEvent();
+                kafkaTemplate.send("order-notification-topic", new OrderListEvent(order.getOrderNumber()));
+            }catch (Exception e){
+                System.out.println("Error sending message to kafka");
+                e.printStackTrace();
+            }
             return new ResponseEntity<>(new ApiResponse("Order created successfully"), HttpStatus.CREATED);
         }
     }

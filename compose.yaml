@@ -20,11 +20,11 @@ services:
     container_name: 'mongodb'
     hostname: 'localhost'
 
-#  zipkin:
-#    image: 'openzipkin/zipkin'
-#    container_name: 'zipkin'
-#    ports:
-#      - '9411:9411'
+  zipkin:
+    image: 'openzipkin/zipkin'
+    container_name: 'zipkin'
+    ports:
+      - '9411:9411'
 
   zookeeper:
     image: confluentinc/cp-zookeeper:7.4.1

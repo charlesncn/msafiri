@@ -1,4 +1,4 @@
-package com.msafiri.orderservice.event;
+package com.msafiri.event;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,3 +12,4 @@ import java.io.Serializable;
 public class OrderListEvent implements Serializable {
     private String orderNumber;
 }
+

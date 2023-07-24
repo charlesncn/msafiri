@@ -20,10 +20,17 @@ spring:
   kafka:
     bootstrap-servers: localhost:9092
     template:
-      default-topic: order-events
+      default-topic: order-notification-topic
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring:
+          json:
+            type:
+              mapping:
+                event: com.msafiri.orderservice.event.OrderListEvent
+
 server:
   port: 8081
   error:

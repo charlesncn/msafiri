@@ -38,7 +38,7 @@ public class OrderController {
                 return CompletableFuture
                         .completedFuture(ResponseEntity
                                 .status(INTERNAL_SERVER_ERROR)
-                                .body(ApiResponse.errorResponse("Something went wrong, please try again later")));
+                                .body(ApiResponse.errorResponse("Something went wrong, unable to place order")));
             }
         });
     }
