@@ -4,6 +4,7 @@ import com.msafiri.inventoryservice.dto.reponse.ApiResponse;
 import com.msafiri.inventoryservice.dto.reponse.InventoryResponse;
 import com.msafiri.inventoryservice.dto.request.NewProductRequest;
 import com.msafiri.inventoryservice.entity.Inventory;
+import com.msafiri.inventoryservice.exception.ProductNotFoundException;
 import com.msafiri.inventoryservice.repository.InventoryRepository;
 import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
@@ -23,8 +24,22 @@ public class InventoryService {
 
     @Transactional(readOnly = true)
     public ResponseEntity<?> getInventoryStatus(List<String> id) {
-        if (id.isEmpty())
-            throw new IllegalArgumentException("Product id cannot be empty");
+        if (id.isEmpty()){
+            List<Inventory> inventory = inventoryRepository.findAll();
+            if (inventory.isEmpty())
+                try {
+                    throw new ProductNotFoundException("No items in inventory");
+                } catch (ProductNotFoundException e) {
+                    e.printStackTrace();
+                }
+            return new ResponseEntity<>(inventory.stream().map(inventoryRes ->
+                    InventoryResponse.builder()
+                            .productId(inventoryRes.getProductId())
+                            .available(inventoryRes.getQuantity() > 0)
+                            .quantity(inventoryRes.getQuantity())
+                            .build()).toList(),
+                    HttpStatus.OK);
+        }
 
         List<Inventory> inventory = inventoryRepository.findByProductIdIn(id);
         System.out.println("Items in Inventory: " + inventory);

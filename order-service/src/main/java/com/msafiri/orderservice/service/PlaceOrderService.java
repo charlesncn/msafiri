@@ -73,7 +73,6 @@ public class PlaceOrderService {
         } else {
             orderRepository.save(order);
             try{
-                OrderListEvent orderListEvent = new OrderListEvent();
                 kafkaTemplate.send("order-notification-topic", new OrderListEvent(order.getOrderNumber()));
             }catch (Exception e){
                 System.out.println("Error sending message to kafka");
