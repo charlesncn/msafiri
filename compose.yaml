@@ -1,24 +1,85 @@
 services:
+
+  keycloak-mysql:
+    container_name: 'keycloak-mysql'
+    image: mysql:8.0.25
+    environment:
+      - 'MYSQL_ROOT_PASSWORD: ms@f1r!'
+      - 'MYSQL_DATABASE: keycloak'
+      - 'MYSQL_USER: keycloak'
+      - 'MYSQL_PASSWORD: keycloak'
+    volumes:
+      - './keycloak-mysql/:/var/lib/mysql'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    restart: unless-stopped
+
   keycloak:
+    container_name: 'keycloak'
     image: 'quay.io/keycloak/keycloak:22.0.1'
     ports:
       - '8181:8080'
     environment:
-      - 'KEYCLOAK_ADMIN=admin'
-      - 'KEYCLOAK_ADMIN_PASSWORD=admin'
-    container_name: 'keycloak'
-    command: 'start-dev'
+      - 'DB_VENDOR: MYSQL'
+      - 'DB_ADDR: mysql'
+      - 'DB_DATABASE: keycloak'
+      - 'DB_USER: keycloak'
+      - 'DB_PASSWORD: keycloak'
+      - 'KEYCLOAK_ADMIN: admin'
+      - 'KEYCLOAK_ADMIN_PASSWORD: admin'
+    command: ['start-dev', '--import-realm']
+    volumes:
+      - './keycloak-realms/:/opt/keycloak/data/import/'
+    depends_on:
+        - 'keycloak-mysql'
 
+  postgres-order-service:
+    container_name: 'order-service-db'
+    image: 'postgres:latest'
+    environment:
+      - 'POSTGRES_DB: msafiri-order-service'
+      - 'POSTGRES_USER: msafiri'
+      - 'POSTGRES_PASSWORD: ms@f1r!'
+      - 'PGDATA: /data/postgres'
+    volumes:
+      - './order-service-db/:/data/postgres'
+    ports:
+      - '5431:5431'
+    expose:
+      - '5431'
+    command: -p 5431
+    restart: unless-stopped
+
+  postgres-inventory-service:
+    container_name: 'order-inventory-db'
+    image: 'postgres:latest'
+    environment:
+      - 'POSTGRES_DB: msafiri-inventory-service'
+      - 'POSTGRES_USER: msafiri'
+      - 'POSTGRES_PASSWORD: ms@f1r!'
+      - 'PGDATA: /data/postgres'
+    volumes:
+      - './order-inventory-db/:/data/postgres'
+    ports:
+      - '5432:5432'
+    expose:
+      - '5432'
+    restart: unless-stopped
 
   mongodb:
+    container_name: 'mongodb'
     image: 'mongo:latest'
     environment:
       - 'MONGO_INITDB_ROOT_USERNAME: root'
       - 'MONGO_INITDB_ROOT_PASSWORD: root'
     ports:
       - '27017:27017'
-    container_name: 'mongodb'
     hostname: 'localhost'
+    volumes:
+      - 'mongodb:/data/db'
+    restart: unless-stopped
 
   zipkin:
     image: 'openzipkin/zipkin'
@@ -64,3 +125,60 @@ services:
       CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
       CONFLUENT_METRICS_ENABLE: 'true'
       CONFLUENT_SUPPORT_CUSTOMER_ID: 'anonymous'
+
+
+#  Eureka-server
+  discovery-server:
+    container_name: 'discovery-server'
+    image: 'g700/discovery-server:latest'
+    ports:
+      - '8761:8761'
+    environment:
+      - 'SPRING_PROFILES_ACTIVE: docker'
+    depends_on:
+      - 'zipkin'
+    restart: unless-stopped
+
+# API Gateway
+  api-gateway:
+    container_name: 'api-gateway'
+    image: 'g700/api-gateway:latest'
+    ports:
+      - '8082:8080'
+    expose:
+      - '8082'
+    environment:
+      - 'SPRING_PROFILES_ACTIVE: docker'
+      - 'LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB: TRACES'
+    depends_on:
+      - 'zipkin'
+      - 'keycloak'
+      - 'discovery-server'
+
+# product service
+  product-service:
+      container_name: 'product-service'
+      image: 'g700/product-service:latest'
+      environment:
+      - 'SPRING_PROFILES_ACTIVE: docker'
+      - 'LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB: TRACES'
+      depends_on:
+      - 'zipkin'
+      - 'discovery-server'
+      - 'mongodb'
+      - 'api-gateway'
+
+# order service
+  order-service:
+      container_name: 'order-service'
+      image: 'g700/order-service:latest'
+      environment:
+      - 'SPRING_PROFILES_ACTIVE: docker'
+      - 'LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB: TRACES'
+      - 'SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-order-service:5431/msafiri-order-service'
+      depends_on:
+      - 'zipkin'
+      - 'discovery-server'
+      - 'api-gateway'
+      - 'broker'
+      - 'postgres-order-service'
