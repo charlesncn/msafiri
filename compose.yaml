@@ -127,6 +127,7 @@ services:
       CONFLUENT_SUPPORT_CUSTOMER_ID: 'anonymous'
 
 
+
 #  Eureka-server
   discovery-server:
     container_name: 'discovery-server'
@@ -182,3 +183,64 @@ services:
       - 'api-gateway'
       - 'broker'
       - 'postgres-order-service'
+
+# inventory service
+  inventory-service:
+      container_name: 'inventory-service'
+      image: 'g700/inventory-service:latest'
+      environment:
+      - 'SPRING_PROFILES_ACTIVE: docker'
+      - 'LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB: TRACES'
+      - 'SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-inventory-service:5432/msafiri-inventory-service'
+      depends_on:
+      - 'discovery-server'
+      - 'api-gateway'
+      - 'postgres-inventory-service'
+
+# notification service
+  notification-service:
+      container_name: 'notification-service'
+      image: 'g700/notification-service:latest'
+      environment:
+      - 'SPRING_PROFILES_ACTIVE: docker'
+      - 'LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_WEB: TRACES'
+      depends_on:
+      - 'discovery-server'
+      - 'api-gateway'
+      - 'broker'
+      - "zipkin"
+
+
+# ------- API Health Check -----------
+
+# prometheus
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    depends_on:
+      - order-service
+      - product-service
+      - inventory-service
+      - notification-service
+      - api-gateway
+      - discovery-server
+    restart: unless-stopped
+# grafana
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+    depends_on:
+      - prometheus
+    volumes:
+      - ./grafana-storage:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+
