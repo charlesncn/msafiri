@@ -2,19 +2,20 @@ services:
 
   keycloak-mysql:
     container_name: 'keycloak-mysql'
-    image: mysql:8.0.25
+    image: 'mysql:8.0.25'
     environment:
-      - 'MYSQL_ROOT_PASSWORD: ms@f1r!'
-      - 'MYSQL_DATABASE: keycloak'
-      - 'MYSQL_USER: keycloak'
-      - 'MYSQL_PASSWORD: keycloak'
+      - MYSQL_ROOT_PASSWORD= ms@f1r!
+      - MYSQL_DATABASE= keycloak
+      - MYSQL_USER= keycloak
+      - MYSQL_PASSWORD= keycloak
     volumes:
       - './keycloak-mysql/:/var/lib/mysql'
     ports:
       - '3306:3306'
     expose:
       - '3306'
-    restart: unless-stopped
+    restart: 'unless-stopped'
+
 
   keycloak:
     container_name: 'keycloak'
@@ -26,7 +27,7 @@ services:
       - 'DB_ADDR: mysql'
       - 'DB_DATABASE: keycloak'
       - 'DB_USER: keycloak'
-      - 'DB_PASSWORD: keycloak'
+      - 'DB_PASSWORD: ms@f1r!'
       - 'KEYCLOAK_ADMIN: admin'
       - 'KEYCLOAK_ADMIN_PASSWORD: admin'
     command: ['start-dev', '--import-realm']
@@ -78,7 +79,7 @@ services:
       - '27017:27017'
     hostname: 'localhost'
     volumes:
-      - 'mongodb:/data/db'
+      - './mongodb:/data/db'
     restart: unless-stopped
 
   zipkin:
@@ -215,32 +216,31 @@ services:
 
 # prometheus
   prometheus:
-    image: prom/prometheus
-    container_name: prometheus
+    image: 'prom/prometheus'
+    container_name: 'prometheus'
     ports:
-      - 9090:9090
+      - '9090:9090'
     volumes:
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - './prometheus/prometheus.yml:/etc/prometheus/prometheus.yml'
     depends_on:
-      - order-service
-      - product-service
-      - inventory-service
-      - notification-service
-      - api-gateway
-      - discovery-server
-    restart: unless-stopped
+      - 'product-service'
+      - 'inventory-service'
+      - 'notification-service'
+      - 'api-gateway'
+      - 'discovery-server'
+    restart: 'unless-stopped'
 # grafana
   grafana:
-    image: grafana/grafana
-    container_name: grafana
-    restart: unless-stopped
+    image: 'grafana/grafana'
+    container_name: 'grafana'
+    restart: 'unless-stopped'
     ports:
-      - 3000:3000
+      - '3000:3000'
     depends_on:
-      - prometheus
+      - 'prometheus'
     volumes:
-      - ./grafana-storage:/var/lib/grafana
+      - './grafana-storage:/var/lib/grafana'
     environment:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - 'GF_SECURITY_ADMIN_USER=admin'
+      - 'GF_SECURITY_ADMIN_PASSWORD=admin'
 
